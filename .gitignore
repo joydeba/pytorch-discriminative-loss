@@ -112,3 +112,5 @@ tmp/
 # IntelliJ
 .idea/
 *.iml
+
+pytorch
