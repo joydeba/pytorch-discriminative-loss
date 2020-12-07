@@ -71,7 +71,8 @@ class DiscriminativeLoss(_Loss):
                 pad_sample = torch.zeros(n_features, n_pad_clusters)
                 pad_sample = Variable(pad_sample)
                 if self.usegpu:
-                    pad_sample = pad_sample.cuda()
+                    # pad_sample = pad_sample.cuda()
+                    pad_sample = pad_sample
                 mean_sample = torch.cat((mean_sample, pad_sample), dim=1)
             means.append(mean_sample)
 
@@ -125,7 +126,8 @@ class DiscriminativeLoss(_Loss):
             margin = 2 * self.delta_dist * (1.0 - torch.eye(n_clusters[i]))
             margin = Variable(margin)
             if self.usegpu:
-                margin = margin.cuda()
+                # margin = margin.cuda()
+                margin = margin
             c_dist = torch.sum(torch.clamp(margin - torch.norm(diff, self.norm, 0), min=0) ** 2)
             dist_term += c_dist / (2 * n_clusters[i] * (n_clusters[i] - 1))
         dist_term /= bs
