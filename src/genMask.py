@@ -11,93 +11,67 @@ file_bbs = {}                                       # Dictionary containing poly
 MASK_WIDTH = 1024									# Dimensions should match those of ground truth image
 MASK_HEIGHT = 1024									
 
-# Read JSON file
-# with open(json_path) as f:
-#   data = json.load(f)
-
 file_bbs = {}
 
 from xml.dom import minidom
 
 xmlpath = 'ethz_1/rotated_xml'
+xmlpath_rec = 'ethz_1/axis_aligned_xml'
 for filename in os.listdir(xmlpath):
     if not filename.endswith('.xml'): continue
     fullname = os.path.join(xmlpath, filename)
+    fullname_rec = os.path.join(xmlpath_rec, filename)
     fname = os.path.splitext(filename)[0]
     xmldoc = minidom.parse(fullname)
+    xmldoc_rec = minidom.parse(fullname_rec)
+    itemlist_rec = xmldoc_rec.getElementsByTagName('bndbox')
     itemlist = xmldoc.getElementsByTagName('robndbox')
     print(len(itemlist))
     all_points = []
-    for s in itemlist:
+    for s, s_rec in zip(itemlist, itemlist_rec):
         rec_points =[]
-        x1 = float(s.getElementsByTagName('cx')[0].firstChild.nodeValue)
-        y1= float(s.getElementsByTagName('cy')[0].firstChild.nodeValue)
-        x2 = x1 + float(s.getElementsByTagName('w')[0].firstChild.nodeValue) 
-        y2 = y1 + float(s.getElementsByTagName('h')[0].firstChild.nodeValue)
+        x0 = float(s.getElementsByTagName('cx')[0].firstChild.nodeValue)
+        y0 = float(s.getElementsByTagName('cy')[0].firstChild.nodeValue)
+        w = float(s.getElementsByTagName('w')[0].firstChild.nodeValue) 
+        h = float(s.getElementsByTagName('h')[0].firstChild.nodeValue)
         theta = float(s.getElementsByTagName('angle')[0].firstChild.nodeValue)
+
+        x1 = float(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
+        y1 = float(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
+        x2 = float(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
+        y2 = float(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
+
+        # xmin = x0+(x1-x0)*math.cos(theta)+(y1-y0)*math.sin(theta)
+        # ymin = y0-(x1-x0)*math.sin(theta)+(y1-y0)*math.cos(theta)
+
+        # xmax = x0+(x2-x0)*math.cos(theta)+(y2-y0)*math.sin(theta)
+        # ymax = y0-(x2-x0)*math.sin(theta)+(y2-y0)*math.cos(theta)
 
         xmin = x1
         ymin = y1
-        xmax = x1+(x2-x1)*math.cos(theta)+(y2-y1)*math.sin(theta)
-        ymax = y1-(x2-x1)*math.sin(theta)+(y2-y1)*math.cos(theta)
+        xmax = x2
+        ymax = y2
 
         rec_points.append([xmin,ymin])
         rec_points.append([xmin,ymax])
         rec_points.append([xmax,ymax])
         rec_points.append([xmax,ymin])
+        
+
+        
+        
 
         all_points.append(rec_points)
     file_bbs[fname] = all_points
 
-
-# Extract X and Y coordinates if available and update dictionary
-# def add_to_dict(data, itr, key, count):
-#     try:
-#         x_points = data[itr]["regions"][count]["shape_attributes"]["all_points_x"]
-#         y_points = data[itr]["regions"][count]["shape_attributes"]["all_points_y"]
-#     except:
-#         print("No BB. Skipping", key)
-#         return
-    
-#     all_points = []
-#     for i, x in enumerate(x_points):
-#         all_points.append([x, y_points[i]])
-    
-#     file_bbs[key] = all_points
-  
-# for itr in data:
-#     file_name_json = data[itr]["filename"]
-#     sub_count = 0               # Contains count of masks for a single ground truth image
-    
-#     if len(data[itr]["regions"]) > 1:
-#         for _ in range(len(data[itr]["regions"])):
-#             key = file_name_json[:-4] + "*" + str(sub_count+1)
-#             add_to_dict(data, itr, key, sub_count)
-#             sub_count += 1
-#     else:
-#         add_to_dict(data, itr, file_name_json[:-4], 0)
-
 			
 print("\nDict size: ", len(file_bbs))
 
-for file_name in os.listdir(source_folder):
-    to_save_folder = os.path.join(source_folder)
-    image_folder = os.path.join(to_save_folder, "imagesN")
-    mask_folder = os.path.join(to_save_folder, "masks")
-    curr_img = os.path.join(source_folder, file_name)
-    
-    # make folders and copy image to new location
-    # os.mkdir(to_save_folder)
-    # os.mkdir(image_folder)
-    # os.mkdir(mask_folder)
-    # os.rename(curr_img, os.path.join(image_folder, file_name))
-        
-# For each entry in dictionary, generate mask and save in correponding 
-# folder
+
+to_save_folder = os.path.join(source_folder)
+mask_folder = os.path.join(to_save_folder, "masks")
+
 for itr in file_bbs:
-    # num_masks = itr.split("*")
-    to_save_folder = os.path.join(source_folder)
-    mask_folder = os.path.join(to_save_folder, "masks")
     mask = np.zeros((MASK_WIDTH, MASK_HEIGHT))
     for obj in file_bbs[itr]:
         try:
@@ -105,7 +79,7 @@ for itr in file_bbs:
         except:
             print("Not found:", obj)
             continue
-        cv2.fillPoly(mask, np.int32([obj]), color=(255))
+        cv2.fillPoly(mask, np.int32([arr]), color=(255))
     count += 1    
     cv2.imwrite(os.path.join(mask_folder, itr + ".png") , mask)
         
