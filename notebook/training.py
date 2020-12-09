@@ -98,7 +98,7 @@ for epoch in range(10): # range(300)
     disc_losses = []
     ce_losses = []
     
-    for batched in train_dataloader:
+    for batched in train_loader:
         print("Batched")
         images, sem_labels, ins_labels = batched
         # images = Variable(images).cuda()
