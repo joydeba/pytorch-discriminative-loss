@@ -29,6 +29,7 @@ for filename in os.listdir(xmlpath):
     print(len(itemlist))
     all_points = []
     for s in itemlist:
+        rec_points =[]
         x1 = float(s.getElementsByTagName('cx')[0].firstChild.nodeValue)
         y1= float(s.getElementsByTagName('cy')[0].firstChild.nodeValue)
         x2 = x1 + float(s.getElementsByTagName('w')[0].firstChild.nodeValue) 
@@ -37,13 +38,15 @@ for filename in os.listdir(xmlpath):
 
         xmin = x1
         ymin = y1
-        xmax = x1+(x1-x1)*math.cos(theta)+(y2-y1)*math.sin(theta)
+        xmax = x1+(x2-x1)*math.cos(theta)+(y2-y1)*math.sin(theta)
         ymax = y1-(x2-x1)*math.sin(theta)+(y2-y1)*math.cos(theta)
 
-        all_points.append([xmin,ymin])
-        all_points.append([xmin,ymax])
-        all_points.append([xmax,ymax])
-        all_points.append([xmax,ymin])
+        rec_points.append([xmin,ymin])
+        rec_points.append([xmin,ymax])
+        rec_points.append([xmax,ymax])
+        rec_points.append([xmax,ymin])
+
+        all_points.append(rec_points)
     file_bbs[fname] = all_points
 
 
@@ -84,29 +87,26 @@ for file_name in os.listdir(source_folder):
     curr_img = os.path.join(source_folder, file_name)
     
     # make folders and copy image to new location
-    os.mkdir(to_save_folder)
-    os.mkdir(image_folder)
-    os.mkdir(mask_folder)
-    os.rename(curr_img, os.path.join(image_folder, file_name))
+    # os.mkdir(to_save_folder)
+    # os.mkdir(image_folder)
+    # os.mkdir(mask_folder)
+    # os.rename(curr_img, os.path.join(image_folder, file_name))
         
 # For each entry in dictionary, generate mask and save in correponding 
 # folder
 for itr in file_bbs:
-    num_masks = itr.split("*")
-    to_save_folder = os.path.join(source_folder, num_masks[0])
+    # num_masks = itr.split("*")
+    to_save_folder = os.path.join(source_folder)
     mask_folder = os.path.join(to_save_folder, "masks")
     mask = np.zeros((MASK_WIDTH, MASK_HEIGHT))
-    try:
-        arr = np.array(file_bbs[itr])
-    except:
-        print("Not found:", itr)
-        continue
-    count += 1
-    cv2.fillPoly(mask, [arr], color=(255))
-    
-    if len(num_masks) > 1:
-    	cv2.imwrite(os.path.join(mask_folder, itr.replace("*", "_") + ".png") , mask)    
-    else:
-        cv2.imwrite(os.path.join(mask_folder, itr + ".png") , mask)
+    for obj in file_bbs[itr]:
+        try:
+            arr = np.array(obj)
+        except:
+            print("Not found:", obj)
+            continue
+        cv2.fillPoly(mask, np.int32([obj]), color=(255))
+    count += 1    
+    cv2.imwrite(os.path.join(mask_folder, itr + ".png") , mask)
         
 print("Images saved:", count)
