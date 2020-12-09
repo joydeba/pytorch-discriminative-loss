@@ -36,21 +36,23 @@ for filename in os.listdir(xmlpath):
         h = float(s.getElementsByTagName('h')[0].firstChild.nodeValue)
         theta = float(s.getElementsByTagName('angle')[0].firstChild.nodeValue)
 
-        x1 = float(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
-        y1 = float(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
-        x2 = float(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
-        y2 = float(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
+        # x1 = float(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
+        # y1 = float(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
+        # x2 = float(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
+        # y2 = float(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
 
-        # xmin = x0+(x1-x0)*math.cos(theta)+(y1-y0)*math.sin(theta)
-        # ymin = y0-(x1-x0)*math.sin(theta)+(y1-y0)*math.cos(theta)
+        x1 = x0 -(w/2)
+        y1 = y0 - (h/2)
+        x2 = x0 + (w/2)
+        y2 = y0 + (h/2)
 
-        # xmax = x0+(x2-x0)*math.cos(theta)+(y2-y0)*math.sin(theta)
-        # ymax = y0-(x2-x0)*math.sin(theta)+(y2-y0)*math.cos(theta)
+        xmin = x0+(x1-x0)*math.cos(theta)+(y1-y0)*math.sin(theta)
+        ymin = y0-(x1-x0)*math.sin(theta)+(y1-y0)*math.cos(theta)
 
-        xmin = x1
-        ymin = y1
-        xmax = x2
-        ymax = y2
+        xmax = x0+(x2-x0)*math.cos(theta)+(y2-y0)*math.sin(theta)
+        ymax = y0-(x2-x0)*math.sin(theta)+(y2-y0)*math.cos(theta)
+
+
 
         rec_points.append([xmin,ymin])
         rec_points.append([xmin,ymax])
