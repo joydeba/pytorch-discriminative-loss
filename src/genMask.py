@@ -3,6 +3,8 @@ import cv2
 import json
 import numpy as np
 import math  
+from xml.dom import minidom
+
 
 source_folder = os.path.join(os.getcwd(), "ethz_1/images")
 # json_path = "maskGen_json.json"                     # Relative to root directory
@@ -13,7 +15,7 @@ MASK_HEIGHT = 1024
 
 file_bbs = {}
 
-from xml.dom import minidom
+
 
 xmlpath = 'ethz_1/rotated_xml'
 xmlpath_rec = 'ethz_1/axis_aligned_xml'
@@ -71,7 +73,7 @@ print("\nDict size: ", len(file_bbs))
 
 
 to_save_folder = os.path.join(source_folder)
-mask_folder = os.path.join(to_save_folder, "masks")
+mask_folder = os.path.join(to_save_folder, "insmasks")
 
 for itr in file_bbs:
     mask = np.zeros((MASK_WIDTH, MASK_HEIGHT))
@@ -81,7 +83,8 @@ for itr in file_bbs:
         except:
             print("Not found:", obj)
             continue
-        cv2.fillPoly(mask, np.int32([arr]), color=(255))
+        rcolor = list(np.random.random(size=3) * 256)    
+        cv2.fillPoly(mask, np.int32([arr]), color=rcolor)
     count += 1    
     cv2.imwrite(os.path.join(mask_folder, itr + ".png") , mask)
         

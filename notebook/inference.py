@@ -15,6 +15,9 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 
+
+
+
 np.random.seed(0)
 # get_ipython().run_line_magic('matplotlib', 'inline')
 

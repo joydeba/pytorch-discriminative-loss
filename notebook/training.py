@@ -11,6 +11,8 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 
+from torchvision import datasets
+import torchvision.transforms as transforms
 
 # %%
 import sys
@@ -19,6 +21,26 @@ sys.path.append('src/')
 from model import UNet
 from dataset import SSSDataset
 from loss import DiscriminativeLoss
+
+def data_loading():
+    # convert data to torch.FloatTensor
+    # transform = transforms.ToTensor()
+    transform = transforms.Compose([transforms.Resize([int(1024), int(1024)]),
+                                transforms.ToTensor()])
+    # load the training and test datasets
+    # train_data = datasets.MNIST(root='data', train=True, download=True, transform=transform)
+    train_data = datasets.ImageFolder( root="ethz_1/images", transform=transform)
+    # test_data = datasets.MNIST(root='data', train=False, download=True, transform=transform)
+    test_data = datasets.ImageFolder( root="ethz_1/images", transform=transform)
+    # Create training and test dataloaders
+    num_workers = 0
+    # how many samples per batch to load
+    
+    # prepare data loaders
+    batch_size = 4
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, num_workers=num_workers)
+    test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size, num_workers=num_workers)     
+    return train_loader, test_loader
 
 
 # %%
@@ -36,6 +58,9 @@ model = UNet()
 train_dataset = SSSDataset(train=True, n_sticks=n_sticks)
 train_dataloader = DataLoader(train_dataset, batch_size=4,
                               shuffle=False, num_workers=0, pin_memory=True)
+
+
+train_loader, test_loader = data_loading()
 
 
 # %%
