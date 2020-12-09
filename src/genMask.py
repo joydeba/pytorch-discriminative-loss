@@ -78,8 +78,8 @@ for filename in os.listdir(xmlpath):
 print("\nDict size: ", len(file_bbs))
 
 for file_name in os.listdir(source_folder):
-    to_save_folder = os.path.join(source_folder, file_name[:-4])
-    image_folder = os.path.join(to_save_folder, "images")
+    to_save_folder = os.path.join(source_folder)
+    image_folder = os.path.join(to_save_folder, "imagesN")
     mask_folder = os.path.join(to_save_folder, "masks")
     curr_img = os.path.join(source_folder, file_name)
     
