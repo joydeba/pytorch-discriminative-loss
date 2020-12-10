@@ -87,7 +87,7 @@ for sp in sem_pred:
 
 # %%
 fig, axes = plt.subplots(3, 3, figsize=(15, 15))
-plt.gray()
+# plt.gray()
 
 for i, ax_ in enumerate(axes):
     # color_img = gen_color_img(p_sem_pred[i], ins_pred[i], n_sticks)
