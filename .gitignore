@@ -104,7 +104,7 @@ venv.bak/
 .mypy_cache/
 
 # model directory
-model/
+# model/
 
 # temporary directory
 tmp/
