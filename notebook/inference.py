@@ -14,7 +14,7 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
-
+from datasetIMG import DataLoaderInstanceSegmentation
 
 
 
@@ -50,10 +50,14 @@ model.load_state_dict(param)
 
 # %%
 # Dataset for inference
-test_dataset = SSSDataset(train=False, n_sticks=n_sticks, data_size=16)
-test_dataloader = DataLoader(test_dataset, batch_size=16,
+# test_dataset = SSSDataset(train=False, n_sticks=n_sticks, data_size=16)
+test_dataset = DataLoaderInstanceSegmentation()
+# test_dataloader = DataLoader(test_dataset, batch_size=16,
+#                              shuffle=False, num_workers=0,
+#                              pin_memory=True)
+test_dataloader = DataLoader(test_dataset, batch_size=8,
                              shuffle=False, num_workers=0,
-                             pin_memory=True)
+                             pin_memory=True)                             
 
 
 # %%
