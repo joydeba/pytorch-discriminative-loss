@@ -66,7 +66,7 @@ class DiscriminativeLoss(_Loss):
 
             # padding
             n_pad_clusters = max_n_clusters - n_clusters[i]
-            assert n_pad_clusters >= 0
+            # assert n_pad_clusters >= 0
             if n_pad_clusters > 0:
                 pad_sample = torch.zeros(n_features, n_pad_clusters)
                 pad_sample = Variable(pad_sample)
