@@ -1,7 +1,7 @@
 # To add a new cell, type '# %%'
 # To add a new markdown cell, type '# %% [markdown]'
 # %%
-from IPython import get_ipython
+# from IPython import get_ipython
 
 # %%
 import numpy as np
@@ -95,6 +95,7 @@ for i, ax_ in enumerate(axes):
     ax_[1].imshow(~p_sem_pred[i])
     # ax_[2].imshow(color_img)
     # ax_[2].imshow(~ins_pred[i])
+plt.show()
 
 
 
