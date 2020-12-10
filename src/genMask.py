@@ -83,9 +83,10 @@ for itr in file_bbs:
         except:
             print("Not found:", obj)
             continue
-        rcolor = list(np.random.random(size=3) * 256)    
+        rcolor = list(np.random.random(size=3) * 256)
+        # rcolor = (255)    
         cv2.fillPoly(mask, np.int32([arr]), color=rcolor)
     count += 1    
-    cv2.imwrite(os.path.join(mask_folder, itr + ".png") , mask)
+    cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , mask)
         
 print("Images saved:", count)
