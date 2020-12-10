@@ -69,7 +69,7 @@ scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
 
 # %%
 # Train
-model_dir = Path('../model')
+model_dir = Path('model')
 
 best_loss = np.inf
 for epoch in range(10): # range(300)
