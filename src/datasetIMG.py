@@ -7,8 +7,9 @@ from PIL import Image
 import numpy as np 
 
 class DataLoaderInstanceSegmentation(Dataset):
-    def __init__(self, folder_path="ethz_1/images"):
+    def __init__(self, folder_path="ethz_1/images_testing", train = True):
         super(DataLoaderInstanceSegmentation, self).__init__()
+        self.train = train
         self.img_files = glob.glob(os.path.join(folder_path,"raw","*.jpg"))
         self.seg_mask_files = []
         self.ins_mask_files = []
@@ -32,4 +33,7 @@ class DataLoaderInstanceSegmentation(Dataset):
         data =  self.to_tensor(Image.open(img_path))
         label_seg =  self.to_tensor(Image.open(seg_mask_path))
         label_ins =  self.to_tensor(Image.open(ins_mask_path))
-        return data, label_seg, label_ins
+        if self.train:
+            return data, label_seg, label_ins
+        else:     
+            return data

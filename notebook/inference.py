@@ -14,7 +14,7 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
-from datasetIMG import DataLoaderInstanceSegmentation
+
 
 
 
@@ -29,7 +29,7 @@ sys.path.append('src/')
 from model import UNet
 from dataset import SSSDataset
 from utils import gen_color_img
-
+from datasetIMG import DataLoaderInstanceSegmentation
 
 # %%
 n_sticks = 8
@@ -51,7 +51,7 @@ model.load_state_dict(param)
 # %%
 # Dataset for inference
 # test_dataset = SSSDataset(train=False, n_sticks=n_sticks, data_size=16)
-test_dataset = DataLoaderInstanceSegmentation()
+test_dataset = DataLoaderInstanceSegmentation(train = False)
 # test_dataloader = DataLoader(test_dataset, batch_size=16,
 #                              shuffle=False, num_workers=0,
 #                              pin_memory=True)
@@ -90,10 +90,12 @@ fig, axes = plt.subplots(3, 3, figsize=(15, 15))
 plt.gray()
 
 for i, ax_ in enumerate(axes):
-    color_img = gen_color_img(p_sem_pred[i], ins_pred[i], n_sticks)
+    # color_img = gen_color_img(p_sem_pred[i], ins_pred[i], n_sticks)
     ax_[0].imshow(images[i])
     ax_[1].imshow(~p_sem_pred[i])
-    ax_[2].imshow(color_img)
+    # ax_[2].imshow(color_img)
+    # ax_[2].imshow(~ins_pred[i])
+
 
 
 # %%
