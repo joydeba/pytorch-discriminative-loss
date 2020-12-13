@@ -32,7 +32,7 @@ from utils import gen_color_img
 from datasetIMG import DataLoaderInstanceSegmentation
 
 # %%
-n_sticks = 8
+n_sticks = 60
 
 
 # %%

@@ -24,7 +24,7 @@ from loss import DiscriminativeLoss
 
 
 # %%
-n_sticks = 8
+n_sticks = 60
 
 
 # %%
@@ -36,7 +36,7 @@ model = UNet()
 # %%
 # Dataset for train
 # train_dataset = SSSDataset(train=True, n_sticks=n_sticks)
-trainDS = SSSDataset(train=True, n_sticks=n_sticks)
+# trainDS = SSSDataset(train=True, n_sticks=n_sticks)
 train_dataset = DataLoaderInstanceSegmentation()
 train_dataloader = DataLoader(train_dataset, batch_size=4,
                               shuffle=False, num_workers=0, pin_memory=True)

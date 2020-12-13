@@ -6,7 +6,7 @@ import math
 from xml.dom import minidom
 
 
-source_folder = os.path.join(os.getcwd(), "ethz_1/imagesSample/raw")
+source_folder = os.path.join(os.getcwd(), "ethz_1/imagesSample")
 # json_path = "maskGen_json.json"                     # Relative to root directory
 count = 0                                           # Count of total images saved
 file_bbs = {}                                       # Dictionary containing polygon coordinates for mask
@@ -18,7 +18,7 @@ file_bbs = {}
 
 
 xmlpath = 'ethz_1/rotated_xmlSample'
-xmlpath_rec = 'ethz_1/axis_aligned_xmlample'
+xmlpath_rec = 'ethz_1/axis_aligned_xmlSample'
 for filename in os.listdir(xmlpath):
     if not filename.endswith('.xml'): continue
     fullname = os.path.join(xmlpath, filename)
@@ -78,7 +78,7 @@ print("\nDict size: ", len(file_bbs))
 
 
 to_save_folder = os.path.join(source_folder)
-mask_folder = os.path.join(to_save_folder, "insmasks")
+mask_folder = os.path.join(to_save_folder, "masks")
 
 for itr in file_bbs:
     mask = np.zeros((MASK_WIDTH, MASK_HEIGHT))
@@ -88,8 +88,8 @@ for itr in file_bbs:
         except:
             print("Not found:", obj)
             continue
-        rcolor = list(np.random.random(size=3) * 256)
-        # rcolor = (255)    
+        # rcolor = list(np.random.random(size=3) * 256)
+        rcolor = (255)    
         cv2.fillPoly(mask, np.int32([arr]), color=rcolor)
     count += 1    
     cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , mask)
