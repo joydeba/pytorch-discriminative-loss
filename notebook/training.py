@@ -72,7 +72,7 @@ scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
 model_dir = Path('model')
 
 best_loss = np.inf
-for epoch in range(10): # range(300)
+for epoch in range(5): # range(300)
     print(f'epoch : {epoch}')
     disc_losses = []
     ce_losses = []
@@ -101,8 +101,7 @@ for epoch in range(10): # range(300)
 
         # Cross Entropy Loss
         _, sem_labels_ce = sem_labels.max(1)
-        ce_loss = criterion_ce(sem_predict.permute(0, 2, 3, 1)                                   .contiguous().view(-1, 2),
-                               sem_labels_ce.view(-1))
+        ce_loss = criterion_ce(sem_predict.permute(0, 2, 3, 1).contiguous().view(-1, 2), sem_labels_ce.view(-1))
         loss += ce_loss
         ce_losses.append(ce_loss.cpu().data.numpy())
 

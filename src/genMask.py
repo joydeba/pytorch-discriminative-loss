@@ -6,7 +6,7 @@ import math
 from xml.dom import minidom
 
 
-source_folder = os.path.join(os.getcwd(), "ethz_1/images")
+source_folder = os.path.join(os.getcwd(), "ethz_1/imagesSample/raw")
 # json_path = "maskGen_json.json"                     # Relative to root directory
 count = 0                                           # Count of total images saved
 file_bbs = {}                                       # Dictionary containing polygon coordinates for mask
@@ -17,8 +17,8 @@ file_bbs = {}
 
 
 
-xmlpath = 'ethz_1/rotated_xml'
-xmlpath_rec = 'ethz_1/axis_aligned_xml'
+xmlpath = 'ethz_1/rotated_xmlSample'
+xmlpath_rec = 'ethz_1/axis_aligned_xmlample'
 for filename in os.listdir(xmlpath):
     if not filename.endswith('.xml'): continue
     fullname = os.path.join(xmlpath, filename)
@@ -38,21 +38,26 @@ for filename in os.listdir(xmlpath):
         h = float(s.getElementsByTagName('h')[0].firstChild.nodeValue)
         theta = float(s.getElementsByTagName('angle')[0].firstChild.nodeValue)
 
-        # x1 = float(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
-        # y1 = float(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
-        # x2 = float(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
-        # y2 = float(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
+        x1 = float(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
+        y1 = float(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
+        x2 = float(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
+        y2 = float(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
 
-        x1 = x0 -(w/2)
-        y1 = y0 - (h/2)
-        x2 = x0 + (w/2)
-        y2 = y0 + (h/2)
+        xmin = x1
+        ymin = y1
+        xmax = x2
+        ymax = y2
 
-        xmin = x0+(x1-x0)*math.cos(theta)+(y1-y0)*math.sin(theta)
-        ymin = y0-(x1-x0)*math.sin(theta)+(y1-y0)*math.cos(theta)
+        # x1 = x0 -(w/2)
+        # y1 = y0 - (h/2)
+        # x2 = x0 + (w/2)
+        # y2 = y0 + (h/2)
 
-        xmax = x0+(x2-x0)*math.cos(theta)+(y2-y0)*math.sin(theta)
-        ymax = y0-(x2-x0)*math.sin(theta)+(y2-y0)*math.cos(theta)
+        # xmin = x0+(x1-x0)*math.cos(theta)+(y1-y0)*math.sin(theta)
+        # ymin = y0-(x1-x0)*math.sin(theta)+(y1-y0)*math.cos(theta)
+
+        # xmax = x0+(x2-x0)*math.cos(theta)+(y2-y0)*math.sin(theta)
+        # ymax = y0-(x2-x0)*math.sin(theta)+(y2-y0)*math.cos(theta)
 
 
 
