@@ -35,8 +35,8 @@ model = UNet()
 
 # %%
 # Dataset for train
-train_dataset = SSSDataset(train=True, n_sticks=n_sticks)
-# train_dataset = DataLoaderInstanceSegmentation()
+# train_dataset = SSSDataset(train=True, n_sticks=n_sticks)
+train_dataset = DataLoaderInstanceSegmentation()
 train_dataloader = DataLoader(train_dataset, batch_size=4,
                               shuffle=False, num_workers=0, pin_memory=True)
 
@@ -71,7 +71,7 @@ scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
 model_dir = Path('model')
 
 best_loss = np.inf
-for epoch in range(5): # range(300)
+for epoch in range(50): # range(300)
     print(f'epoch : {epoch}')
     disc_losses = []
     ce_losses = []
@@ -116,13 +116,3 @@ for epoch in range(5): # range(300)
         print('Best Model!')
         modelname = 'model.pth'
         torch.save(model.state_dict(), model_dir.joinpath(modelname))
-
-
-# %%
-
-
-
-# %%
-
-
-
