@@ -10,7 +10,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
-
+from torchvision.utils import save_image
 
 # %%
 import sys
@@ -20,11 +20,12 @@ from model import UNet
 from dataset import SSSDataset
 from datasetIMG import DataLoaderInstanceSegmentation
 from loss import DiscriminativeLoss
-
+from PIL import Image
 
 
 # %%
-n_sticks = 60
+# n_sticks = 60
+n_sticks = 8
 
 
 # %%
@@ -82,6 +83,11 @@ for epoch in range(50): # range(300)
         # images = Variable(images).cuda()
         # sem_labels = Variable(sem_labels).cuda()
         # ins_labels = Variable(ins_labels).cuda()
+
+        # save_image(images[0], 'raw.png')
+        # save_image(sem_labels[0], 'sem.png')
+        # save_image(ins_labels[0], 'ins.png') 
+
         images = Variable(images)
         sem_labels = Variable(sem_labels)
         ins_labels = Variable(ins_labels)
