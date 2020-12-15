@@ -7,12 +7,12 @@ from PIL import Image
 import numpy as np 
 
 class DataLoaderInstanceSegmentation(Dataset):
-    def __init__(self, folder_path="ethz_1/images_testing", train = True):
+    def __init__(self, folder_path="ethz_1/imagesSample", train = True):
         super(DataLoaderInstanceSegmentation, self).__init__()
         if train:
-            folder_path="ethz_1/imagesSample"
+            folder_path="ethz_1/imagesSampleN"
         else:     
-            folder_path="ethz_1/images_testing"
+            folder_path="ethz_1/imagesSampleN_testing"
         self.train = train
         self.img_files = glob.glob(os.path.join(folder_path,"raw","*.jpg"))
         self.seg_mask_files = []
@@ -34,9 +34,12 @@ class DataLoaderInstanceSegmentation(Dataset):
         # label_seg = np.array(Image.open(seg_mask_path))
         # label_ins = np.array(Image.open(ins_mask_path))
         # return torch.from_numpy(data).float(), torch.from_numpy(label_seg).float(), torch.from_numpy(label_ins).float()
-        data =  self.to_tensor(Image.open(img_path))
-        label_seg =  self.to_tensor(Image.open(seg_mask_path))
-        label_ins =  self.to_tensor(Image.open(ins_mask_path))
+        data =  self.to_tensor(Image.open(img_path).convert('RGB'))
+        label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
+        label_ins =  self.to_tensor(Image.open(ins_mask_path).convert('L'))
+        # data =  self.to_tensor(Image.open(img_path))
+        # label_seg =  self.to_tensor(Image.open(seg_mask_path))
+        # label_ins =  self.to_tensor(Image.open(ins_mask_path))
         if self.train:
             return data, label_seg, label_ins
         else:     

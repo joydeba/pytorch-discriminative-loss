@@ -22,19 +22,35 @@ def coloring(mask):
     return ins_color_img
 
 
-def gen_instance_mask(sem_pred, ins_pred, n_obj):
+# def gen_instance_mask(sem_pred, ins_pred, n_obj):
+#     embeddings = ins_pred[:, sem_pred].transpose(1, 0)
+#     clustering = KMeans(n_obj).fit(embeddings)
+#     labels = clustering.labels_
+
+#     instance_mask = np.zeros_like(sem_pred, dtype=np.uint8)
+#     for i in range(n_obj):
+#         lbl = np.zeros_like(labels, dtype=np.uint8)
+#         lbl[labels == i] = i + 1
+#         instance_mask[sem_pred] += lbl
+
+#     return instance_mask
+
+def gen_instance_mask(sem_pred, ins_pred):
     embeddings = ins_pred[:, sem_pred].transpose(1, 0)
-    clustering = KMeans(n_obj).fit(embeddings)
+    clustering = KMeans(70).fit(embeddings)
     labels = clustering.labels_
 
     instance_mask = np.zeros_like(sem_pred, dtype=np.uint8)
-    for i in range(n_obj):
+    for i in range(70):
         lbl = np.zeros_like(labels, dtype=np.uint8)
         lbl[labels == i] = i + 1
         instance_mask[sem_pred] += lbl
 
-    return instance_mask
+    return instance_mask    
 
 
-def gen_color_img(sem_pred, ins_pred, n_obj):
-    return coloring(gen_instance_mask(sem_pred, ins_pred, n_obj))
+# def gen_color_img(sem_pred, ins_pred, n_obj):
+#     return coloring(gen_instance_mask(sem_pred, ins_pred, n_obj))
+
+def gen_color_img(sem_pred, ins_pred):
+    return coloring(gen_instance_mask(sem_pred, ins_pred))
