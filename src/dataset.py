@@ -3,7 +3,7 @@ import cv2
 
 import torch
 from torch.utils.data import Dataset
-
+from PIL import Image
 
 class SSSDataset(Dataset):
     def __init__(self, train, n_sticks=8, data_size=512):
