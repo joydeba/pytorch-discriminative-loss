@@ -38,10 +38,10 @@ for filename in os.listdir(xmlpath):
         h = float(s.getElementsByTagName('h')[0].firstChild.nodeValue)
         theta = float(s.getElementsByTagName('angle')[0].firstChild.nodeValue)
 
-        x1 = float(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
-        y1 = float(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
-        x2 = float(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
-        y2 = float(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
+        x1 = int(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
+        y1 = int(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
+        x2 = int(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
+        y2 = int(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
 
         xmin = x1
         ymin = y1
@@ -78,10 +78,11 @@ print("\nDict size: ", len(file_bbs))
 
 
 to_save_folder = os.path.join(source_folder)
-mask_folder = os.path.join(to_save_folder, "masks")
+mask_folder = os.path.join(to_save_folder, "insmasks")
 
 for itr in file_bbs:
-    mask = np.zeros((MASK_WIDTH, MASK_HEIGHT))
+    # mask = np.zeros(shape = (MASK_WIDTH, MASK_HEIGHT, 3), dtype=np.uint8)
+    mask = np.zeros(shape = (MASK_WIDTH, MASK_HEIGHT), dtype=np.uint8)
     for obj in file_bbs[itr]:
         try:
             arr = np.array(obj)
@@ -90,8 +91,10 @@ for itr in file_bbs:
             continue
         # rcolor = list(np.random.random(size=3) * 256)
         rcolor = (255)    
-        cv2.fillPoly(mask, np.int32([arr]), color=rcolor)
+        # cv2.fillPoly(mask, np.int32([arr]), color=rcolor)
+        cv2.fillPoly(mask, [arr], color=rcolor)
     count += 1    
+    # cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , cv2.cvtColor(mask, cv2.COLOR_RGB2BGR))
     cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , mask)
         
 print("Images saved:", count)
