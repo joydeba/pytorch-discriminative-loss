@@ -46,6 +46,18 @@ class SSSDataset(Dataset):
             sem[np.sum(ins, axis=0) != 0] = True
             sem = np.stack([~sem, sem]).astype(np.uint8)
 
+            rescaled_img = (255.0 / img.max() * (img - img.min())).astype(np.uint8)
+            imraw = Image.fromarray(rescaled_img)
+            imraw.save('raw.png')
+
+            rescaled_sem = (255.0 / sem.max() * (sem - sem.min())).astype(np.uint8)
+            imsem = Image.fromarray(rescaled_sem)
+            imsem.save('sem.png')
+
+            rescaled_ins = (255.0 / ins.max() * (ins - ins.min())).astype(np.uint8)
+            imins = Image.fromarray(rescaled_ins)
+            imins.save('ins.png')
+
             # 1 * height * width
             img = torch.Tensor(img[np.newaxis])
             # 2 * height * width
