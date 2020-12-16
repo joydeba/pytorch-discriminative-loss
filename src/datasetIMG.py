@@ -4,7 +4,9 @@ from torch.utils.data import Dataset
 import glob
 import os
 from PIL import Image
-import numpy as np 
+import numpy as np
+from xml.dom import minidom 
+import cv2
 
 class DataLoaderInstanceSegmentation(Dataset):
     def __init__(self, folder_path="ethz_1/images", train = True):
@@ -20,7 +22,7 @@ class DataLoaderInstanceSegmentation(Dataset):
         self.to_tensor = transforms.ToTensor()
         for img_path in self.img_files:
             self.seg_mask_files.append(os.path.join(folder_path,'masks',os.path.basename(img_path)))
-            self.ins_mask_files.append(os.path.join(folder_path,'insmasks',os.path.basename(img_path)))
+            self.ins_mask_files.append(os.path.join(folder_path,'insmasks',os.path.splitext(os.path.basename(img_path))[0]+'.xml'))
 
 
     def __len__(self):
@@ -34,9 +36,28 @@ class DataLoaderInstanceSegmentation(Dataset):
         # label_seg = np.array(Image.open(seg_mask_path))
         # label_ins = np.array(Image.open(ins_mask_path))
         # return torch.from_numpy(data).float(), torch.from_numpy(label_seg).float(), torch.from_numpy(label_ins).float()
+
         data =  self.to_tensor(Image.open(img_path).convert('RGB'))
         label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
-        label_ins =  self.to_tensor(Image.open(ins_mask_path).convert('L'))
+        # label_ins =  self.to_tensor(Image.open(ins_mask_path).convert('L'))
+
+        fullname = os.path.join(ins_mask_path)
+        xmldoc = minidom.parse(fullname)
+        itemlist = xmldoc.getElementsByTagName('robndbox')
+        ins = np.zeros((0, 1024, 1024), dtype=np.uint8)
+        for rec in itemlist:
+            x = float(rec.getElementsByTagName('cx')[0].firstChild.nodeValue)
+            y = float(rec.getElementsByTagName('cy')[0].firstChild.nodeValue)
+            w = float(rec.getElementsByTagName('w')[0].firstChild.nodeValue) 
+            h = float(rec.getElementsByTagName('h')[0].firstChild.nodeValue)
+            theta = float(s.getElementsByTagName('angle')[0].firstChild.nodeValue)
+            rect = ([x, y], [w, h], theta)
+            box = np.int0(cv2.boxPoints(rect))
+            gt = np.zeros_like(data)
+            gt = cv2.fillPoly(gt, [box], 1)
+            ins[:, gt != 0] = 0
+            ins = np.concatenate([ins, gt[np.newaxis]])
+        label_ins = torch.Tensor(ins)
         # data =  self.to_tensor(Image.open(img_path))
         # label_seg =  self.to_tensor(Image.open(seg_mask_path))
         # label_ins =  self.to_tensor(Image.open(ins_mask_path))
