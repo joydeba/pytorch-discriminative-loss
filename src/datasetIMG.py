@@ -38,8 +38,8 @@ class DataLoaderInstanceSegmentation(Dataset):
         # label_ins = np.array(Image.open(ins_mask_path))
         # return torch.from_numpy(data).float(), torch.from_numpy(label_seg).float(), torch.from_numpy(label_ins).float()
 
-        # data =  self.to_tensor(Image.open(img_path).convert('RGB'))
-        # label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
+        data =  self.to_tensor(Image.open(img_path).convert('RGB'))
+        label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
         # label_ins =  self.to_tensor(Image.open(ins_mask_path).convert('L'))
 
         fullname = os.path.join(ins_mask_path)
@@ -61,8 +61,8 @@ class DataLoaderInstanceSegmentation(Dataset):
             ins = np.concatenate([ins, gt[np.newaxis]])
         label_ins = torch.Tensor(ins)
 
-        data =  torch.Tensor(Image.open(img_path).convert('RGB'))
-        label_seg =  torch.Tensor(Image.open(seg_mask_path).convert('L'))
+        # data =  torch.Tensor(Image.open(img_path).convert('RGB'))
+        # label_seg =  torch.Tensor(Image.open(seg_mask_path).convert('L'))
 
         # data =  self.to_tensor(Image.open(img_path))
         # label_seg =  self.to_tensor(Image.open(seg_mask_path))
