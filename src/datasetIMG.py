@@ -50,7 +50,7 @@ class DataLoaderInstanceSegmentation(Dataset):
             y = float(rec.getElementsByTagName('cy')[0].firstChild.nodeValue)
             w = float(rec.getElementsByTagName('w')[0].firstChild.nodeValue) 
             h = float(rec.getElementsByTagName('h')[0].firstChild.nodeValue)
-            theta = float(s.getElementsByTagName('angle')[0].firstChild.nodeValue)
+            theta = float(rec.getElementsByTagName('angle')[0].firstChild.nodeValue)
             rect = ([x, y], [w, h], theta)
             box = np.int0(cv2.boxPoints(rect))
             gt = np.zeros_like(data)
