@@ -24,7 +24,7 @@ from PIL import Image
 
 
 # %%
-n_sticks = 60
+n_sticks = 40
 # n_sticks = 8
 
 

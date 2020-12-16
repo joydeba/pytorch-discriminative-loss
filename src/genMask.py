@@ -6,7 +6,7 @@ import math
 from xml.dom import minidom
 
 
-source_folder = os.path.join(os.getcwd(), "ethz_1/images")
+source_folder = os.path.join(os.getcwd(), "ethz_1/images_testing")
 # json_path = "maskGen_json.json"                     # Relative to root directory
 count = 0                                           # Count of total images saved
 file_bbs = {}                                       # Dictionary containing polygon coordinates for mask
@@ -43,10 +43,10 @@ for filename in os.listdir(xmlpath):
         x2 = int(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
         y2 = int(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
 
-        xmin = x1
-        ymin = y1
-        xmax = x2
-        ymax = y2
+        # xmin = x1
+        # ymin = y1
+        # xmax = x2
+        # ymax = y2
 
         # x1 = x0 -(w/2)
         # y1 = y0 - (h/2)
@@ -61,16 +61,20 @@ for filename in os.listdir(xmlpath):
 
 
 
-        rec_points.append([xmin,ymin])
-        rec_points.append([xmin,ymax])
-        rec_points.append([xmax,ymax])
-        rec_points.append([xmax,ymin])
+        # rec_points.append([xmin,ymin])
+        # rec_points.append([xmin,ymax])
+        # rec_points.append([xmax,ymax])
+        # rec_points.append([xmax,ymin])
+
+        rect = ([x0, y0], [w, h], theta)
+        box = np.int0(cv2.boxPoints(rect))
         
 
         
         
 
-        all_points.append(rec_points)
+        # all_points.append(rec_points)
+        all_points.append(box)
     file_bbs[fname] = all_points
 
 			
@@ -85,7 +89,8 @@ for itr in file_bbs:
     mask = np.zeros(shape = (MASK_WIDTH, MASK_HEIGHT), dtype=np.uint8)
     for obj in file_bbs[itr]:
         try:
-            arr = np.array(obj)
+            # arr = np.array(obj)
+            arr = obj
         except:
             print("Not found:", obj)
             continue

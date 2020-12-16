@@ -44,8 +44,9 @@ class DataLoaderInstanceSegmentation(Dataset):
         fullname = os.path.join(ins_mask_path)
         xmldoc = minidom.parse(fullname)
         itemlist = xmldoc.getElementsByTagName('robndbox')
+        data_shape = np.ones((1024, 1024), dtype=np.uint8) * 255
         ins = np.zeros((0, 1024, 1024), dtype=np.uint8)
-        for rec in itemlist:
+        for rec in itemlist[0:40]:
             x = float(rec.getElementsByTagName('cx')[0].firstChild.nodeValue)
             y = float(rec.getElementsByTagName('cy')[0].firstChild.nodeValue)
             w = float(rec.getElementsByTagName('w')[0].firstChild.nodeValue) 
@@ -53,7 +54,7 @@ class DataLoaderInstanceSegmentation(Dataset):
             theta = float(rec.getElementsByTagName('angle')[0].firstChild.nodeValue)
             rect = ([x, y], [w, h], theta)
             box = np.int0(cv2.boxPoints(rect))
-            gt = np.zeros_like(data)
+            gt = np.zeros_like(data_shape)
             gt = cv2.fillPoly(gt, [box], 1)
             ins[:, gt != 0] = 0
             ins = np.concatenate([ins, gt[np.newaxis]])
