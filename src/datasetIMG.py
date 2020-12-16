@@ -40,11 +40,8 @@ class DataLoaderInstanceSegmentation(Dataset):
 
         data =  self.to_tensor(Image.open(img_path).convert('RGB'))
         data_shape = np.ones((1024, 1024), dtype=np.uint8) * 255
-        
-        # label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
-        sem = np.zeros_like(data_shape, dtype=bool)
-        sem[np.sum(ins, axis=0) != 0] = True
-        sem = np.stack([~sem, sem]).astype(np.uint8)
+
+
 
         # label_ins =  self.to_tensor(Image.open(ins_mask_path).convert('L'))
         fullname = os.path.join(ins_mask_path)
@@ -63,9 +60,15 @@ class DataLoaderInstanceSegmentation(Dataset):
             gt = cv2.fillPoly(gt, [box], 1)
             ins[:, gt != 0] = 0
             ins = np.concatenate([ins, gt[np.newaxis]])
+
+
+        # label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
+        sem = np.zeros_like(data_shape, dtype=bool)
+        sem[np.sum(ins, axis=0) != 0] = True
+        sem = np.stack([~sem, sem]).astype(np.uint8)
+
+
         label_ins = torch.Tensor(ins)
-
-
 
         label_seg = torch.Tensor(sem)
 
