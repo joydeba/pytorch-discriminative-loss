@@ -52,7 +52,7 @@ class DataLoaderInstanceSegmentation(Dataset):
             w = float(rec.getElementsByTagName('w')[0].firstChild.nodeValue) 
             h = float(rec.getElementsByTagName('h')[0].firstChild.nodeValue)
             theta = float(rec.getElementsByTagName('angle')[0].firstChild.nodeValue)
-            rect = ([x, y], [w, h], theta)
+            rect = ([x, y], [w, h], math.degrees(theta))
             box = np.int0(cv2.boxPoints(rect))
             gt = np.zeros_like(data_shape)
             gt = cv2.fillPoly(gt, [box], 1)

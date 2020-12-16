@@ -6,7 +6,7 @@ import math
 from xml.dom import minidom
 
 
-source_folder = os.path.join(os.getcwd(), "ethz_1/images_testing")
+source_folder = os.path.join(os.getcwd(), "ethz_1/imagesSample")
 # json_path = "maskGen_json.json"                     # Relative to root directory
 count = 0                                           # Count of total images saved
 file_bbs = {}                                       # Dictionary containing polygon coordinates for mask
@@ -17,20 +17,21 @@ file_bbs = {}
 
 
 
-xmlpath = 'ethz_1/rotated_xml'
-xmlpath_rec = 'ethz_1/axis_aligned_xml'
+xmlpath = 'ethz_1/imagesSample/insmasks'
+# xmlpath_rec = 'ethz_1/axis_aligned_xml'
 for filename in os.listdir(xmlpath):
     if not filename.endswith('.xml'): continue
     fullname = os.path.join(xmlpath, filename)
-    fullname_rec = os.path.join(xmlpath_rec, filename)
+    # fullname_rec = os.path.join(xmlpath_rec, filename)
     fname = os.path.splitext(filename)[0]
     xmldoc = minidom.parse(fullname)
-    xmldoc_rec = minidom.parse(fullname_rec)
-    itemlist_rec = xmldoc_rec.getElementsByTagName('bndbox')
+    # xmldoc_rec = minidom.parse(fullname_rec)
+    # itemlist_rec = xmldoc_rec.getElementsByTagName('bndbox')
     itemlist = xmldoc.getElementsByTagName('robndbox')
     print(len(itemlist))
     all_points = []
-    for s, s_rec in zip(itemlist, itemlist_rec):
+    # for s, s_rec in zip(itemlist, itemlist_rec):
+    for s in itemlist:    
         rec_points =[]
         x0 = float(s.getElementsByTagName('cx')[0].firstChild.nodeValue)
         y0 = float(s.getElementsByTagName('cy')[0].firstChild.nodeValue)
@@ -38,10 +39,10 @@ for filename in os.listdir(xmlpath):
         h = float(s.getElementsByTagName('h')[0].firstChild.nodeValue)
         theta = float(s.getElementsByTagName('angle')[0].firstChild.nodeValue)
 
-        x1 = int(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
-        y1 = int(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
-        x2 = int(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
-        y2 = int(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
+        # x1 = int(s_rec.getElementsByTagName('xmin')[0].firstChild.nodeValue)
+        # y1 = int(s_rec.getElementsByTagName('ymin')[0].firstChild.nodeValue)
+        # x2 = int(s_rec.getElementsByTagName('xmax')[0].firstChild.nodeValue) 
+        # y2 = int(s_rec.getElementsByTagName('ymax')[0].firstChild.nodeValue)
 
         # xmin = x1
         # ymin = y1
@@ -66,7 +67,7 @@ for filename in os.listdir(xmlpath):
         # rec_points.append([xmax,ymax])
         # rec_points.append([xmax,ymin])
 
-        rect = ([x0, y0], [w, h], theta)
+        rect = ([x0, y0], [w, h], math.degrees(theta))
         box = np.int0(cv2.boxPoints(rect))
         
 
