@@ -7,12 +7,13 @@ from PIL import Image
 import numpy as np
 from xml.dom import minidom 
 import cv2
+import math 
 
 class DataLoaderInstanceSegmentation(Dataset):
-    def __init__(self, folder_path="ethz_1/images", train = True):
+    def __init__(self, folder_path="ethz_1/imagesSample", train = True):
         super(DataLoaderInstanceSegmentation, self).__init__()
         if train:
-            folder_path="ethz_1/images"
+            folder_path="ethz_1/imagesSample"
         else:     
             folder_path="ethz_1/images_testing"
         self.train = train
@@ -37,8 +38,8 @@ class DataLoaderInstanceSegmentation(Dataset):
         # label_ins = np.array(Image.open(ins_mask_path))
         # return torch.from_numpy(data).float(), torch.from_numpy(label_seg).float(), torch.from_numpy(label_ins).float()
 
-        data =  self.to_tensor(Image.open(img_path).convert('RGB'))
-        label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
+        # data =  self.to_tensor(Image.open(img_path).convert('RGB'))
+        # label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
         # label_ins =  self.to_tensor(Image.open(ins_mask_path).convert('L'))
 
         fullname = os.path.join(ins_mask_path)
@@ -59,6 +60,10 @@ class DataLoaderInstanceSegmentation(Dataset):
             ins[:, gt != 0] = 0
             ins = np.concatenate([ins, gt[np.newaxis]])
         label_ins = torch.Tensor(ins)
+
+        data =  torch.Tensor(Image.open(img_path).convert('RGB'))
+        label_seg =  torch.Tensor(Image.open(seg_mask_path).convert('L'))
+
         # data =  self.to_tensor(Image.open(img_path))
         # label_seg =  self.to_tensor(Image.open(seg_mask_path))
         # label_ins =  self.to_tensor(Image.open(ins_mask_path))
