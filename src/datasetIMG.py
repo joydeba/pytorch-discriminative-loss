@@ -39,13 +39,17 @@ class DataLoaderInstanceSegmentation(Dataset):
         # return torch.from_numpy(data).float(), torch.from_numpy(label_seg).float(), torch.from_numpy(label_ins).float()
 
         data =  self.to_tensor(Image.open(img_path).convert('RGB'))
-        label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
-        # label_ins =  self.to_tensor(Image.open(ins_mask_path).convert('L'))
+        data_shape = np.ones((1024, 1024), dtype=np.uint8) * 255
+        
+        # label_seg =  self.to_tensor(Image.open(seg_mask_path).convert('L'))
+        sem = np.zeros_like(data_shape, dtype=bool)
+        sem[np.sum(ins, axis=0) != 0] = True
+        sem = np.stack([~sem, sem]).astype(np.uint8)
 
+        # label_ins =  self.to_tensor(Image.open(ins_mask_path).convert('L'))
         fullname = os.path.join(ins_mask_path)
         xmldoc = minidom.parse(fullname)
         itemlist = xmldoc.getElementsByTagName('robndbox')
-        data_shape = np.ones((1024, 1024), dtype=np.uint8) * 255
         ins = np.zeros((0, 1024, 1024), dtype=np.uint8)
         for rec in itemlist[0:40]:
             x = float(rec.getElementsByTagName('cx')[0].firstChild.nodeValue)
@@ -60,6 +64,10 @@ class DataLoaderInstanceSegmentation(Dataset):
             ins[:, gt != 0] = 0
             ins = np.concatenate([ins, gt[np.newaxis]])
         label_ins = torch.Tensor(ins)
+
+
+
+        label_seg = torch.Tensor(sem)
 
         # data =  torch.Tensor(Image.open(img_path).convert('RGB'))
         # label_seg =  torch.Tensor(Image.open(seg_mask_path).convert('L'))
