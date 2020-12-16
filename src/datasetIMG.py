@@ -49,7 +49,7 @@ class DataLoaderInstanceSegmentation(Dataset):
         xmldoc = minidom.parse(fullname)
         itemlist = xmldoc.getElementsByTagName('robndbox')
         ins = np.zeros((0, 1024, 1024), dtype=np.uint8)
-        for rec in itemlist[0:40]:
+        for rec in itemlist[:40]:
             x = float(rec.getElementsByTagName('cx')[0].firstChild.nodeValue)
             y = float(rec.getElementsByTagName('cy')[0].firstChild.nodeValue)
             w = float(rec.getElementsByTagName('w')[0].firstChild.nodeValue) 
