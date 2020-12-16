@@ -54,3 +54,19 @@ def gen_instance_mask(sem_pred, ins_pred):
 
 def gen_color_img(sem_pred, ins_pred):
     return coloring(gen_instance_mask(sem_pred, ins_pred))
+
+
+# MSE loss function
+def mse_loss(y_pred, y_true):
+    squared_error = (y_pred - y_true) ** 2
+    sum_squared_error = np.sum(squared_error)
+    loss = sum_squared_error / y_true.size
+    return loss
+
+
+# MAE loss function
+def mae_loss(y_pred, y_true):
+    abs_error = np.abs(y_pred - y_true)
+    sum_abs_error = np.sum(abs_error)
+    loss = sum_abs_error / y_true.size
+    return loss
