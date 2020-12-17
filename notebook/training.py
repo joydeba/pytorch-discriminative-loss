@@ -38,7 +38,7 @@ model = UNet()
 # Dataset for train
 # train_dataset = SSSDataset(train=True, n_sticks=n_sticks)
 train_dataset = DataLoaderInstanceSegmentation()
-train_dataloader = DataLoader(train_dataset, batch_size=10,
+train_dataloader = DataLoader(train_dataset, batch_size=4,
                               shuffle=False, num_workers=0, pin_memory=True)
 
 
@@ -102,7 +102,8 @@ for epoch in range(5): # range(300)
                                    [n_sticks] * len(images))
         loss += disc_loss
         # import ipdb; ipdb.set_trace()
-        disc_losses.append(disc_loss.cpu().data.numpy())
+        # disc_losses.append(disc_loss.cpu().data.numpy())
+        disc_losses.append(disc_loss)
 
         # Cross Entropy Loss
         _, sem_labels_ce = sem_labels.max(1)
