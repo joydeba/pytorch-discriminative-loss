@@ -10,10 +10,10 @@ import cv2
 import math 
 
 class DataLoaderInstanceSegmentation(Dataset):
-    def __init__(self, folder_path="ethz_1/imagesSample", train = True):
+    def __init__(self, folder_path="ethz_1/images", train = True):
         super(DataLoaderInstanceSegmentation, self).__init__()
         if train:
-            folder_path="ethz_1/imagesSample"
+            folder_path="ethz_1/images"
         else:     
             folder_path="ethz_1/images_testing"
         self.train = train

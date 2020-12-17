@@ -102,7 +102,8 @@ class DiscriminativeLoss(_Loss):
 
             # n_clusters
             c_var = var_sample.sum(1) / target_sample.sum(1)
-            var_term += c_var.sum() / n_clusters[i]
+            if not torch.isnan(c_var.sum()):
+                var_term += c_var.sum() / n_clusters[i]
         var_term /= bs
 
         return var_term
@@ -129,7 +130,8 @@ class DiscriminativeLoss(_Loss):
                 # margin = margin.cuda()
                 margin = margin
             c_dist = torch.sum(torch.clamp(margin - torch.norm(diff, self.norm, 0), min=0) ** 2)
-            dist_term += c_dist / (2 * n_clusters[i] * (n_clusters[i] - 1))
+            if not torch.isnan(c_dist):
+                dist_term += c_dist / (2 * n_clusters[i] * (n_clusters[i] - 1))
         dist_term /= bs
 
         return dist_term
@@ -141,7 +143,9 @@ class DiscriminativeLoss(_Loss):
         for i in range(bs):
             # n_features, n_clusters
             mean_sample = c_means[i, :, :n_clusters[i]]
-            reg_term += torch.mean(torch.norm(mean_sample, self.norm, 0))
+            c_reg = torch.mean(torch.norm(mean_sample, self.norm, 0))
+            if not torch.isnan(c_reg):
+                reg_term += c_reg
         reg_term /= bs
 
         return reg_term

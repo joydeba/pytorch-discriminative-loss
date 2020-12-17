@@ -38,7 +38,7 @@ model = UNet()
 # Dataset for train
 # train_dataset = SSSDataset(train=True, n_sticks=n_sticks)
 train_dataset = DataLoaderInstanceSegmentation()
-train_dataloader = DataLoader(train_dataset, batch_size=4,
+train_dataloader = DataLoader(train_dataset, batch_size=10,
                               shuffle=False, num_workers=0, pin_memory=True)
 
 
@@ -52,7 +52,7 @@ train_dataloader = DataLoader(train_dataset, batch_size=4,
 criterion_disc = DiscriminativeLoss(delta_var=0.5,
                                     delta_dist=1.5,
                                     norm=2,
-                                    usegpu=True)
+                                    usegpu=False)
 criterion_ce = nn.CrossEntropyLoss()
 
 
