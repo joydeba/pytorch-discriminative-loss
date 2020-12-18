@@ -39,7 +39,8 @@ class DataLoaderInstanceSegmentation(Dataset):
         # label_ins = np.array(Image.open(ins_mask_path))
         # return torch.from_numpy(data).float(), torch.from_numpy(label_seg).float(), torch.from_numpy(label_ins).float()
 
-        data =  self.to_tensor(Image.open(img_path).convert('RGB'))
+        data =  np.asarray(Image.open(img_path).convert('RGB')).transpose((2,0,1))
+        data = torch.Tensor(data)
         # data =  torch.Tensor(Image.open(img_path).convert('RGB'))
         # data =  self.to_tensor(Image.open(img_path).convert('L'))
         data_shape = np.ones((1024, 1024), dtype=np.uint8) * 255
