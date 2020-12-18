@@ -103,7 +103,8 @@ for epoch in range(5): # range(300)
         loss += disc_loss
         # import ipdb; ipdb.set_trace()
         # disc_losses.append(disc_loss.cpu().data.numpy())
-        disc_losses.append(disc_loss)
+        if disc_loss != 0:
+            disc_losses.append(disc_loss)
 
         # Cross Entropy Loss
         _, sem_labels_ce = sem_labels.max(1)
@@ -114,6 +115,7 @@ for epoch in range(5): # range(300)
         loss.backward()
         optimizer.step()
     disc_loss = np.mean(disc_losses)
+    # disc_loss = np.mean([dl.item() for dl in disc_losses])
     ce_loss = np.mean(ce_losses)
     print(f'DiscriminativeLoss: {disc_loss:.4f}')
     print(f'CrossEntropyLoss: {ce_loss:.4f}')
