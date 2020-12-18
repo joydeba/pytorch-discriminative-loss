@@ -102,9 +102,9 @@ for epoch in range(5): # range(300)
                                    [n_sticks] * len(images))
         loss += disc_loss
         # import ipdb; ipdb.set_trace()
-        # disc_losses.append(disc_loss.cpu().data.numpy())
         if disc_loss != 0:
-            disc_losses.append(disc_loss)
+            # disc_losses.append(disc_loss)
+            disc_losses.append(disc_loss.cpu().data.numpy())
 
         # Cross Entropy Loss
         _, sem_labels_ce = sem_labels.max(1)
