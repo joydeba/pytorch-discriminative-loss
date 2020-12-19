@@ -64,7 +64,7 @@ class DiscriminativeLoss(_Loss):
             # n_features, n_cluster
             mean_sample = input_sample.sum(2) / target_sample.sum(2)
 
-            # mean_sample[mean_sample != mean_sample] = 0
+            mean_sample[mean_sample != mean_sample] = 0
 
 
             # #Flatten:
