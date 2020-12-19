@@ -59,7 +59,7 @@ criterion_ce = nn.CrossEntropyLoss()
 # %%
 # Optimizer
 parameters = model.parameters()
-optimizer = optim.SGD(parameters, lr=0.01, momentum=0.9, weight_decay=0.001)
+optimizer = optim.SGD(parameters, lr=0.001, momentum=0.9, weight_decay=0.001)
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer=optimizer,
                                                  mode='min',
                                                  factor=0.1,
