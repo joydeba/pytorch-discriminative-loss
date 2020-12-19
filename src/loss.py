@@ -64,6 +64,17 @@ class DiscriminativeLoss(_Loss):
             # n_features, n_cluster
             mean_sample = input_sample.sum(2) / target_sample.sum(2)
 
+            # mean_sample[mean_sample != mean_sample] = 0
+
+
+            # #Flatten:
+            # shape = mean_sample.shape
+            # mean_sample_reshaped = mean_sample.reshape(shape[0],-1)
+            # #Drop all rows containing any nan:
+            # mean_sample_reshaped = mean_sample_reshaped[~torch.any(mean_sample_reshaped.isnan(),dim=1)]
+            # #Reshape back:
+            # mean_sample = mean_sample_reshaped.reshape(mean_sample_reshaped.shape[0],*shape[1:])
+
             # padding
             n_pad_clusters = max_n_clusters - n_clusters[i]
             # assert n_pad_clusters >= 0
