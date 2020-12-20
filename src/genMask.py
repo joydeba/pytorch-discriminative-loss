@@ -104,6 +104,7 @@ for itr in file_bbs:
     count += 1    
     # cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , cv2.cvtColor(mask, cv2.COLOR_RGB2BGR))
     # cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , cv2.cvtColor(mask, cv2.COLOR_RGB2BGRA))
-    cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , ~mask)
+    # cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , ~mask)
+    cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , mask)
         
 print("Images saved:", count)

@@ -37,11 +37,11 @@ def coloring(mask):
 
 def gen_instance_mask(sem_pred, ins_pred):
     embeddings = ins_pred[:, sem_pred].transpose(1, 0)
-    clustering = KMeans(4).fit(embeddings)
+    clustering = KMeans(70).fit(embeddings)
     labels = clustering.labels_
 
     instance_mask = np.zeros_like(sem_pred, dtype=np.uint8)
-    for i in range(4):
+    for i in range(70):
         lbl = np.zeros_like(labels, dtype=np.uint8)
         lbl[labels == i] = i + 1
         instance_mask[sem_pred] += lbl
