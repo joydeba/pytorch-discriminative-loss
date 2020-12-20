@@ -82,7 +82,7 @@ ins_pred = np.concatenate(ins_pred)
 # Post Processing
 p_sem_pred = []
 for sp in sem_pred:
-    p_sem_pred.append(ndi.morphology.binary_fill_holes(sp > 0.5))
+    p_sem_pred.append(ndi.morphology.binary_fill_holes(sp > 0.30))
 
 
 # %%
@@ -94,6 +94,7 @@ for i, ax_ in enumerate(axes):
     ax_[0].imshow(cv2.cvtColor(images[i], cv2.COLOR_BGR2RGB))
     ax_[1].imshow(~p_sem_pred[i])
     ax_[2].imshow(color_img)
+    # ax_[2].imshow(ins_pred[i])
 plt.show()
 
 

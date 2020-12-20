@@ -88,6 +88,7 @@ mask_folder = os.path.join(to_save_folder, "masks")
 for itr in file_bbs:
     # mask = np.zeros(shape = (MASK_WIDTH, MASK_HEIGHT, 3), dtype=np.uint8)
     mask = np.zeros(shape = (MASK_WIDTH, MASK_HEIGHT), dtype=np.uint8)
+    # mask = np.zeros(shape = (MASK_WIDTH, MASK_HEIGHT, 4), dtype=np.uint8)
     for obj in file_bbs[itr]:
         try:
             # arr = np.array(obj)
@@ -96,11 +97,13 @@ for itr in file_bbs:
             print("Not found:", obj)
             continue
         # rcolor = list(np.random.random(size=3) * 256)
-        rcolor = (255)    
+        rcolor = (255)
+        # rcolor = (000)    
         # cv2.fillPoly(mask, np.int32([arr]), color=rcolor)
         cv2.fillPoly(mask, [arr], color=rcolor)
     count += 1    
     # cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , cv2.cvtColor(mask, cv2.COLOR_RGB2BGR))
-    cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , mask)
+    # cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , cv2.cvtColor(mask, cv2.COLOR_RGB2BGRA))
+    cv2.imwrite(os.path.join(mask_folder, itr + ".jpg") , ~mask)
         
 print("Images saved:", count)
