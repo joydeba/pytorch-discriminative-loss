@@ -82,7 +82,7 @@ ins_pred = np.concatenate(ins_pred)
 # Post Processing
 p_sem_pred = []
 for sp in sem_pred:
-    p_sem_pred.append(ndi.morphology.binary_fill_holes(sp > 0.30))
+    p_sem_pred.append(ndi.morphology.binary_fill_holes(sp > 0.01))
 
 
 # %%
