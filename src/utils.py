@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-
+import cv2
 
 def gen_mask(ins_img):
     mask = []
@@ -19,7 +19,16 @@ def coloring(mask):
     for i in range(n_ins):
         ins_color_img[mask == i + 1] =\
             (np.array(colors[i][:3]) * 255).astype(np.uint8)
+    report_no_of_organs(ins_color_img)        
     return ins_color_img
+
+def report_no_of_organs(img):
+    #calling connectedComponentswithStats to get the size of each component
+    nb_comp,output,sizes,centroids=cv2.connectedComponentsWithStats(img,connectivity=4)
+    #taking away the background
+    nb_comp-=1; sizes=sizes[1:,-1]; centroids=centroids[1:,:]
+    print(nb_comp)
+
 
 
 # def gen_instance_mask(sem_pred, ins_pred, n_obj):
