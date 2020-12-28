@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 import cv2
+from skimage import io, filters, measure
+from scipy import ndimage
+
 
 def gen_mask(ins_img):
     mask = []
@@ -23,11 +26,21 @@ def coloring(mask):
     return ins_color_img
 
 def report_no_of_organs(img):
-    #calling connectedComponentswithStats to get the size of each component
-    nb_comp,output,sizes,centroids=cv2.connectedComponentsWithStats(img,connectivity=4)
-    #taking away the background
-    nb_comp-=1; sizes=sizes[1:,-1]; centroids=centroids[1:,:]
-    print(nb_comp)
+
+    # # Connected component implementation
+    # #calling connectedComponentswithStats to get the size of each component
+    # grayimg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    # nb_comp,output,sizes,centroids=cv2.connectedComponentsWithStats(grayimg,connectivity=4)
+    # #taking away the background
+    # nb_comp-=1; sizes=sizes[1:,-1]; centroids=centroids[1:,:]
+    # print(nb_comp)
+
+    val = filters.threshold_otsu(img)
+    drops = ndimage.binary_fill_holes(img < val)
+    labels = measure.label(drops)
+    print(labels.max())
+    
+
 
 
 
@@ -46,11 +59,11 @@ def report_no_of_organs(img):
 
 def gen_instance_mask(sem_pred, ins_pred):
     embeddings = ins_pred[:, sem_pred].transpose(1, 0)
-    clustering = KMeans(70).fit(embeddings)
+    clustering = KMeans(3).fit(embeddings)
     labels = clustering.labels_
 
     instance_mask = np.zeros_like(sem_pred, dtype=np.uint8)
-    for i in range(70):
+    for i in range(3):
         lbl = np.zeros_like(labels, dtype=np.uint8)
         lbl[labels == i] = i + 1
         instance_mask[sem_pred] += lbl
