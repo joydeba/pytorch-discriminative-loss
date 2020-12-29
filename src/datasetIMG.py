@@ -20,11 +20,13 @@ class DataLoaderInstanceSegmentation(Dataset):
         self.img_files = glob.glob(os.path.join(folder_path,"backless_images","*.jpg"))
         self.seg_mask_files = []
         self.ins_mask_files = []
+        self.filenames = []
         self.to_tensor = transforms.ToTensor()
         for img_path in self.img_files:
             self.seg_mask_files.append(os.path.join(folder_path,'masks',os.path.basename(img_path)))
             # self.ins_mask_files.append(os.path.join(folder_path,'insmasks',os.path.splitext(os.path.basename(img_path))[0]+'.xml'))
             self.ins_mask_files.append(os.path.join(folder_path,'masks',os.path.basename(img_path)))
+            self.filenames.append(os.path.basename(img_path))
 
 
     def __len__(self):
@@ -92,7 +94,9 @@ class DataLoaderInstanceSegmentation(Dataset):
         label_seg =  np.asarray(Image.open(seg_mask_path).convert('L'))
         label_seg = torch.Tensor(label_seg[np.newaxis])
 
+        filename = self.filenames[index]
+
         if self.train:
             return data, label_seg, label_ins
         else:     
-            return data
+            return data, filename

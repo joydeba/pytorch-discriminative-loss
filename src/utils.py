@@ -22,8 +22,8 @@ def coloring(mask):
     for i in range(n_ins):
         ins_color_img[mask == i + 1] =\
             (np.array(colors[i][:3]) * 255).astype(np.uint8)
-    report_no_of_organs(ins_color_img)        
-    return ins_color_img
+    no_organs = report_no_of_organs(ins_color_img)        
+    return ins_color_img, no_organs
 
 def report_no_of_organs(img):
 
@@ -39,6 +39,7 @@ def report_no_of_organs(img):
     drops = ndimage.binary_fill_holes(img < val)
     labels = measure.label(drops)
     print(labels.max())
+    return labels.max()
     
 
 

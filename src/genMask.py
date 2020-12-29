@@ -19,6 +19,7 @@ file_bbs = {}
 
 xmlpath = 'inrae_1_all/rotated_xml'
 # xmlpath_rec = 'ethz_1/axis_aligned_xml'
+myfile = open('Groundtruth.txt', 'w')
 for filename in os.listdir(xmlpath):
     if not filename.endswith('.xml'): continue
     fullname = os.path.join(xmlpath, filename)
@@ -29,6 +30,7 @@ for filename in os.listdir(xmlpath):
     # itemlist_rec = xmldoc_rec.getElementsByTagName('bndbox')
     itemlist = xmldoc.getElementsByTagName('robndbox')
     print(len(itemlist))
+    myfile.write(str(fname)+", "+str(len(itemlist)) + "\n")
     all_points = []
     # for s, s_rec in zip(itemlist, itemlist_rec):
     for s in itemlist:    
@@ -80,7 +82,7 @@ for filename in os.listdir(xmlpath):
 
 			
 print("\nDict size: ", len(file_bbs))
-
+myfile.close()
 destination_folder = os.path.join(os.getcwd(), "inrae_1_all")
 to_save_folder = os.path.join(destination_folder)
 mask_folder = os.path.join(to_save_folder, "masks")
