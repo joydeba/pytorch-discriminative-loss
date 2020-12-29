@@ -86,15 +86,15 @@ for sp in sem_pred:
 
 
 # %%
-fig, axes = plt.subplots(5, 2, figsize=(500, 500))
+fig, axes = plt.subplots(2, 2, figsize=(25, 25))
 plt.gray()
 
 for i, ax_ in enumerate(axes):
     color_img = gen_color_img(p_sem_pred[i], ins_pred[i])
-    ax_[0].imshow(cv2.cvtColor(images[i], cv2.COLOR_BGR2RGB))
+    ax_[0].imshow(cv2.cvtColor(images[i], cv2.COLOR_BGR2RGB), aspect="auto")
     # ax_[1].imshow(~p_sem_pred[i])
     # ax_[1].imshow(p_sem_pred[i])
-    ax_[1].imshow(color_img)
+    ax_[1].imshow(color_img, aspect="auto")
     # ax_[2].imshow(ins_pred[i])
 plt.show()
 
