@@ -15,7 +15,7 @@ class DataLoaderInstanceSegmentation(Dataset):
         if train:
             folder_path="inrae_1_all"
         else:     
-            folder_path="images_testing"
+            folder_path="inrae_1_all_testing"
         self.train = train
         self.img_files = glob.glob(os.path.join(folder_path,"backless_images","*.jpg"))
         self.seg_mask_files = []

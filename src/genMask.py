@@ -6,7 +6,7 @@ import math
 from xml.dom import minidom
 
 
-source_folder = os.path.join(os.getcwd(), "inrae_1_all/images")
+source_folder = os.path.join(os.getcwd(), "inrae_1_all_testing/images")
 # json_path = "maskGen_json.json"                     # Relative to root directory
 count = 0                                           # Count of total images saved
 file_bbs = {}                                       # Dictionary containing polygon coordinates for mask
@@ -17,7 +17,7 @@ file_bbs = {}
 
 
 
-xmlpath = 'inrae_1_all/rotated_xml'
+xmlpath = 'inrae_1_all_testing/rotated_xml'
 # xmlpath_rec = 'ethz_1/axis_aligned_xml'
 myfile = open('Groundtruth.txt', 'w')
 for filename in os.listdir(xmlpath):
@@ -30,7 +30,7 @@ for filename in os.listdir(xmlpath):
     # itemlist_rec = xmldoc_rec.getElementsByTagName('bndbox')
     itemlist = xmldoc.getElementsByTagName('robndbox')
     print(len(itemlist))
-    myfile.write(str(fname)+", "+str(len(itemlist)) + "\n")
+    myfile.write(str(fname)+".jpg, "+str(len(itemlist)) + "\n")
     all_points = []
     # for s, s_rec in zip(itemlist, itemlist_rec):
     for s in itemlist:    
@@ -83,7 +83,7 @@ for filename in os.listdir(xmlpath):
 			
 print("\nDict size: ", len(file_bbs))
 myfile.close()
-destination_folder = os.path.join(os.getcwd(), "inrae_1_all")
+destination_folder = os.path.join(os.getcwd(), "inrae_1_all_testing")
 to_save_folder = os.path.join(destination_folder)
 mask_folder = os.path.join(to_save_folder, "masks")
 

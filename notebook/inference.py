@@ -55,7 +55,7 @@ test_dataset = DataLoaderInstanceSegmentation(train = False)
 # test_dataloader = DataLoader(test_dataset, batch_size=16,
 #                              shuffle=False, num_workers=0,
 #                              pin_memory=True)
-test_dataloader = DataLoader(test_dataset, batch_size=8,
+test_dataloader = DataLoader(test_dataset, batch_size=20,
                              shuffle=False, num_workers=0,
                              pin_memory=True)                             
 
@@ -88,7 +88,7 @@ for sp in sem_pred:
 
 
 # %%
-fig, axes = plt.subplots(2, 2, figsize=(25, 25))
+fig, axes = plt.subplots(20, 2, figsize=(25, 25))
 plt.gray()
 myfile = open('Predicted.txt', 'w')
 for i, ax_ in enumerate(axes):
