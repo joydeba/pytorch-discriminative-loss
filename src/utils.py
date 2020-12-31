@@ -81,6 +81,8 @@ def gen_color_img(sem_pred, ins_pred):
 
 # MSE loss function
 def mse_loss(y_pred, y_true):
+    y_pred = np.asarray(y_pred, dtype=np.float32)
+    y_true = np.asarray(y_true, dtype=np.float32)
     squared_error = (y_pred - y_true) ** 2
     sum_squared_error = np.sum(squared_error)
     loss = sum_squared_error / y_true.size
@@ -89,6 +91,8 @@ def mse_loss(y_pred, y_true):
 
 # MAE loss function
 def mae_loss(y_pred, y_true):
+    y_pred = np.asarray(y_pred, dtype=np.float32)
+    y_true = np.asarray(y_true, dtype=np.float32)
     abs_error = np.abs(y_pred - y_true)
     sum_abs_error = np.sum(abs_error)
     loss = sum_abs_error / y_true.size
