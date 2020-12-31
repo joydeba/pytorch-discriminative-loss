@@ -86,7 +86,8 @@ def mse_loss(y_pred, y_true):
     squared_error = (y_pred - y_true) ** 2
     sum_squared_error = np.sum(squared_error)
     loss = sum_squared_error / y_true.size
-    return loss
+    rmse =  np.sqrt(loss)
+    return loss, rmse
 
 
 # MAE loss function
