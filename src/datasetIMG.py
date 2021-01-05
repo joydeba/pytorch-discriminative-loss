@@ -23,10 +23,14 @@ class DataLoaderInstanceSegmentation(Dataset):
         self.filenames = []
         self.to_tensor = transforms.ToTensor()
         for img_path in self.img_files:
-            self.seg_mask_files.append(os.path.join(folder_path,'masks',os.path.basename(img_path)))
-            self.ins_mask_files.append(os.path.join(folder_path,'rotated_xml',os.path.splitext(os.path.basename(img_path))[0]+'.xml'))
-            # self.ins_mask_files.append(os.path.join(folder_path,'masks',os.path.basename(img_path)))
-            self.filenames.append(os.path.basename(img_path))
+            fullname = os.path.join(os.path.join(folder_path,'rotated_xml',os.path.splitext(os.path.basename(img_path))[0]+'.xml'))
+            xmldoc = minidom.parse(fullname)
+            itemlist = xmldoc.getElementsByTagName('robndbox')
+            if len(itemlist) >=15:
+                self.seg_mask_files.append(os.path.join(folder_path,'masks',os.path.basename(img_path)))
+                self.ins_mask_files.append(os.path.join(folder_path,'rotated_xml',os.path.splitext(os.path.basename(img_path))[0]+'.xml'))
+                # self.ins_mask_files.append(os.path.join(folder_path,'masks',os.path.basename(img_path)))
+                self.filenames.append(os.path.basename(img_path))
 
 
     def __len__(self):
@@ -66,7 +70,7 @@ class DataLoaderInstanceSegmentation(Dataset):
         xmldoc = minidom.parse(fullname)
         itemlist = xmldoc.getElementsByTagName('robndbox')
         ins = np.zeros((0, 1024, 1024), dtype=np.uint8)
-        for rec in itemlist[:8]:
+        for rec in itemlist[:15]:
             x = float(rec.getElementsByTagName('cx')[0].firstChild.nodeValue)
             y = float(rec.getElementsByTagName('cy')[0].firstChild.nodeValue)
             w = float(rec.getElementsByTagName('w')[0].firstChild.nodeValue) 
