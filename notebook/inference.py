@@ -88,7 +88,7 @@ for sp in sem_pred:
 
 
 # %%
-fig, axes = plt.subplots(20, 2, figsize=(25, 25))
+fig, axes = plt.subplots(2, 2, figsize=(25, 25))
 plt.gray()
 myfile = open('Predicted.txt', 'w')
 for i, ax_ in enumerate(axes):
