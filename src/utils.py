@@ -99,19 +99,19 @@ def mae_loss(y_pred, y_true):
     loss = sum_abs_error / y_true.size
     return loss
 
-truth = []
-with open("Groundtruth.txt") as f:
-    reader = csv.reader(f)
-    mydict_t = {rows[0]:rows[1] for rows in reader}
+# truth = []
+# with open("Groundtruth.txt") as f:
+#     reader = csv.reader(f)
+#     mydict_t = {rows[0]:rows[1] for rows in reader}
 
-pred = []
-with open("Predicted.txt") as f:
-    reader = csv.reader(f)
-    mydict_p = {rows[0]:rows[1] for rows in reader}
+# pred = []
+# with open("Predicted.txt") as f:
+#     reader = csv.reader(f)
+#     mydict_p = {rows[0]:rows[1] for rows in reader}
 
-for key, value in mydict_t.items():
-    truth.append(value)
-    pred.append(mydict_p[key])
+# for key, value in mydict_t.items():
+#     truth.append(value)
+#     pred.append(mydict_p[key])
 
-print(mse_loss(pred,truth))
-print(mae_loss(pred,truth))
+# print(mse_loss(pred,truth))
+# print(mae_loss(pred,truth))
